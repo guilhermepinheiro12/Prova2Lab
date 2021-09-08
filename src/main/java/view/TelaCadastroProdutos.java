@@ -6,6 +6,8 @@
 package view;
 
 import dao.ProdutoDAO;
+import model.LoginValidation.ProductNameValidationHandler;
+import model.LoginValidation.ProductPriceValidationHandler;
 
 /**
  *
@@ -13,9 +15,8 @@ import dao.ProdutoDAO;
  */
 public class TelaCadastroProdutos extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaCadastroProdutos
-     */
+    ProductNameValidationHandler Handler;
+
     public TelaCadastroProdutos() {
         initComponents();
     }
@@ -121,12 +122,14 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        ProdutoDAO produtoDao = new ProdutoDAO();
-        String nomeProduto = this.nomeTextField.getText();
-        double precoProduto = Double.parseDouble(this.precoTextField.getText());
-        
-        produtoDao.insert(nomeProduto, precoProduto);
-        
+        if (ValidateProductRegistration()) 
+        {
+            ProdutoDAO produtoDao = new ProdutoDAO();
+            String nomeProduto = this.nomeTextField.getText();
+            double precoProduto = Double.parseDouble(this.precoTextField.getText());
+
+            produtoDao.insert(nomeProduto, precoProduto);
+        }
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -135,7 +138,7 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-       this.setVisible(false);
+        this.setVisible(false);
         new TelaLoginView().setVisible(true);
     }//GEN-LAST:event_jButton3MouseClicked
 
@@ -184,4 +187,19 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
     private javax.swing.JTextField nomeTextField;
     private javax.swing.JTextField precoTextField;
     // End of variables declaration//GEN-END:variables
+
+    private boolean ValidateProductRegistration() {
+        if (Handler.Handle()) {
+            if (Handler.SetNext()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void SetValidationMethods() {
+        Handler = new ProductNameValidationHandler(nomeTextField.getText());
+        ProductPriceValidationHandler priceHandler = new ProductPriceValidationHandler(precoTextField.getText());
+        Handler.setNextHandler(priceHandler);
+    }
 }

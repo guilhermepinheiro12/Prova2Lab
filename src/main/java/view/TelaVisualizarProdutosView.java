@@ -6,8 +6,13 @@
 package view;
 
 import dao.ProdutoDAO;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.Produto;
 
@@ -58,6 +63,8 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        btnFileTxt = new javax.swing.JButton();
+        btnFileCsv = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,6 +81,20 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
             }
         });
 
+        btnFileTxt.setText("Salvar em TXT");
+        btnFileTxt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFileTxtMouseClicked(evt);
+            }
+        });
+
+        btnFileCsv.setText("Salvar em CSV");
+        btnFileCsv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFileCsvMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,17 +102,21 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnFileTxt)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(115, 115, 115)
-                        .addComponent(jLabel1)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                                .addComponent(btnFileCsv)))))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +129,11 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFileTxt)
+                    .addComponent(btnFileCsv))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,6 +154,48 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void btnFileTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFileTxtMouseClicked
+        String path = GetPathToSaveFile();
+        if (!path.isBlank()) 
+        {
+            try 
+            {
+                FileWriter myWriter = new FileWriter("exportedtxt.txt");
+                myWriter.write(GetTextToFile());
+                myWriter.close();
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Acesso negado ao caminho do arquivo. Tente executar como admistrador", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (Exception e) 
+            {
+                JOptionPane.showMessageDialog(null, "Um erro ocorreu, tente novamente", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnFileTxtMouseClicked
+
+    private void btnFileCsvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFileCsvMouseClicked
+        String path = GetPathToSaveFile();
+        if (!path.isBlank()) 
+        {
+            try 
+            {
+                FileWriter myWriter = new FileWriter("exportedcsv.CSV");
+                myWriter.write(GetTextToFile());
+                myWriter.close();
+            } 
+            catch (FileNotFoundException e)
+            {
+                JOptionPane.showMessageDialog(null, "Acesso negado ao caminho do arquivo. Tente executar como admistrador", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (Exception e) 
+            {
+                JOptionPane.showMessageDialog(null, "Um erro ocorreu, tente novamente", "Alerta", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnFileCsvMouseClicked
 
     /**
      * @param args the command line arguments
@@ -160,8 +231,57 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    private String GetTextToFile() {
+        String reallyLongString = "";
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");  
+        LocalDateTime now = LocalDateTime.now();
+        reallyLongString = "Mercadinho IFSC\nData: " + dtf.format(LocalDateTime.now()) + "\n\n"
+                + "Item       Descrição           Qtd         Valor Unitário          Valor Total\n";
+        
+        for(Produto produto : lista)
+        {
+            reallyLongString += "\n"
+                + "              " + produto.getNome()
+                + "                " + String.valueOf(produto.getPreco()) 
+                + "                " + String.valueOf(produto.getId());
+        }
+        return reallyLongString;
+    }
+    
+    private String GetTextToCsvFile() 
+    {
+        String reallyLongString = "nome;preco;id";
+        for(Produto produto : lista)
+        {
+            reallyLongString += "\n" + produto.getNome() + 
+                    ";" + String.valueOf(produto.getPreco()) +
+                    ";" + String.valueOf(produto.getId());
+        }
+        
+        return reallyLongString;
+    }
+    
+    private String GetPathToSaveFile() {
+        JFileChooser chooser = new JFileChooser();;
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+            return String.valueOf(chooser.getCurrentDirectory());
+        }
+        else 
+        {
+            return "";
+        }  
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFileCsv;
+    private javax.swing.JButton btnFileTxt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import model.ListaProdutosSingleton;
 import model.Produto;
 import model.Venda;
 
@@ -30,11 +31,12 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipalView
      */
-    ArrayList<Produto> lista = new ArrayList<>();
+    ListaProdutosSingleton ProdutosLista;
 
     public TelaPrincipalView() {
 
         initComponents();
+        ProdutosLista.getInstance();
         preencheLista();
     }
 
@@ -43,13 +45,13 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         ProdutoDAO produtoDao = new ProdutoDAO();
 
         for (Produto produto : produtoDao.getProdutos()) {
-             lista.add(produto);
+             ProdutosLista.AddProductToCart(produto);
         }
         
 
         DefaultListModel dlm = new DefaultListModel();
-        for (int i = 0; i < this.lista.size(); i++) {
-            dlm.addElement(lista.get(i).getNome() + " - " + lista.get(i).getPreco());
+        for (int i = 0; i < this.ProdutosLista.getProductsList().size(); i++) {
+            dlm.addElement(ProdutosLista.getProductsList().get(i).getNome() + " - " + ProdutosLista.getProductsList().get(i).getPreco());
 
         }
         jList1.setModel(dlm);
@@ -160,15 +162,15 @@ public class TelaPrincipalView extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
 
-        for (int i = 0; i < lista.size(); i++) {
-            if (this.jList1.getSelectedValue().contains(this.lista.get(i).getNome())) {
+        for (int i = 0; i < ProdutosLista.getProductsList().size(); i++) {
+            if (this.jList1.getSelectedValue().contains(this.ProdutosLista.getProductsList().get(i).getNome())) {
 
                 VendaDAO vendaDao = VendaDAO.getInstance();
 
                 if (this.jTextField1.getText().length() > 0) {
-                    vendaDao.insert(this.lista.get(i).getNome(), this.lista.get(i).getPreco(), Integer.parseInt(this.jTextField1.getText()));
+                    vendaDao.insert(this.ProdutosLista.getProductsList().get(i).getNome(), this.ProdutosLista.getProductsList().get(i).getPreco(), Integer.parseInt(this.jTextField1.getText()));
                 } else {
-                    vendaDao.insert(this.lista.get(i).getNome(), this.lista.get(i).getPreco(), 1);
+                    vendaDao.insert(this.ProdutosLista.getProductsList().get(i).getNome(), this.ProdutosLista.getProductsList().get(i).getPreco(), 1);
                 }
 
                 String reallyLongString = "";

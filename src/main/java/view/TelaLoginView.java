@@ -121,6 +121,8 @@ public class TelaLoginView extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
 
+        
+        
         UsuarioDao usuarioDAO = UsuarioDao.getInstance();
         Usuario user = usuarioDAO.getUser(this.loginTextField.getText(), this.senhaTextField.getText());
         if (!user.getNome().equals("INVALID")) {
