@@ -1,6 +1,0 @@
-Mercadinho IFSC
-Data: 10/09/2021 00:48
-
-Item       Descrição           Qtd         Valor Unitário          Valor Total
-
-              pera                15.0                0
