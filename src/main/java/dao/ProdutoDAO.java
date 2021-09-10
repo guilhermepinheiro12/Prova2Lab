@@ -36,12 +36,12 @@ public class ProdutoDAO {
      * @param nome
      * @param preco
      */
-    public void remove(int id) {
+    public void remove(String nome) {
 
         try {
             Connection conexao = new Conexao().getConnection();
 
-            String sql = "delete from produto where id=" + id + "";
+            String sql = "delete from produto where produto.nomer='" + nome + "'";
 
             PreparedStatement statement = conexao.prepareStatement(sql);
             statement.execute();
@@ -50,7 +50,7 @@ public class ProdutoDAO {
 
         } catch (SQLException ex) {
 
-            System.out.printf("Erro ao remover %s\n%s\n\n", id, ex.getMessage());
+            System.out.printf("Erro ao remover %s\n%s\n\n", nome, ex.getMessage());
             Logger.getLogger(TelaPrincipalView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -61,7 +61,7 @@ public class ProdutoDAO {
         try {
             Connection conexao = new Conexao().getConnection();
 
-            String sql = "insert into produto(nomer,preco) values('" + nome + "', '" + preco + "')";
+            String sql = "insert into produto(nomer,preco) values('" + nome + "', " + preco + ")";
 
             PreparedStatement statement = conexao.prepareStatement(sql);
             statement.execute();

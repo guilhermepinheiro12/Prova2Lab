@@ -6,6 +6,7 @@
 package view;
 
 import dao.ProdutoDAO;
+import javax.swing.JOptionPane;
 import model.LoginValidation.ProductNameValidationHandler;
 import model.LoginValidation.ProductPriceValidationHandler;
 
@@ -122,13 +123,20 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        if (ValidateProductRegistration()) 
-        {
+        SetValidationMethods();
+        if (ValidateProductRegistration()) {
             ProdutoDAO produtoDao = new ProdutoDAO();
             String nomeProduto = this.nomeTextField.getText();
             double precoProduto = Double.parseDouble(this.precoTextField.getText());
 
             produtoDao.insert(nomeProduto, precoProduto);
+            this.nomeTextField.setText("");
+            this.precoTextField.setText("");
+            
+            JOptionPane.showMessageDialog(this,
+                            "Item adicionado com sucesso", //mensagem
+                            "Sucesso", // titulo da janela
+                            JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton1MouseClicked
 

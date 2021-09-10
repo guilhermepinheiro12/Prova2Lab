@@ -38,7 +38,7 @@ public class ProductNameValidationHandler implements IHandler{
 
     @Override
     public boolean Handle() {
-        String pattern = "^((?=[A-Za-z0-9@])(?![_\\\\-]).)*$";
+        String pattern = "^((?=[A-Za-z0-9@ ])(?![_\\\\-]).)*$";
         
         if (ProductName.matches(pattern)) {
             return true;

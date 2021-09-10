@@ -6,6 +6,7 @@
 package view;
 
 import dao.ProdutoDAO;
+import java.awt.HeadlessException;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
@@ -26,27 +27,31 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
      * Creates new form TelaVisualizarProdutosView
      */
     ArrayList<Produto> lista = new ArrayList<>();
-    
+
     public TelaVisualizarProdutosView() {
         initComponents();
         preencheLista();
     }
-    
+
     public void preencheLista() {
-        
+         this.lista.removeAll(lista);
         ProdutoDAO produtoDao = new ProdutoDAO();
 
-        produtoDao.getProdutos().forEach(produto -> {
-            this.lista.add(produto);
-        });
-        
+        try {
+            produtoDao.getProdutos().forEach((Produto produto) -> {
+                this.lista.add(produto);
+            });
 
-        DefaultListModel dlm = new DefaultListModel();
-        for (int i = 0; i < this.lista.size(); i++) {
-            dlm.addElement(lista.get(i).getNome() + " - " + lista.get(i).getPreco());
+            DefaultListModel dlm = new DefaultListModel();
+            for (int i = 0; i < this.lista.size(); i++) {
+                dlm.addElement(lista.get(i).getNome() + " - " + lista.get(i).getPreco());
 
+            }
+            this.jList1.setModel(dlm);
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-        this.jList1.setModel(dlm);
+
     }
 
     /**
@@ -73,6 +78,11 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setText("Voltar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jButton2.setText("Excluir Selecionado");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -143,34 +153,35 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
 
         for (int i = 0; i < lista.size(); i++) {
             if (this.jList1.getSelectedValue().contains(this.lista.get(i).getNome())) {
-
-                ProdutoDAO produtoDao = ProdutoDAO.getInstance();
-                    produtoDao.remove(this.lista.get(i).getId());
+                try {
+                    System.out.println(  this.lista.get(i).getNome());
+                    ProdutoDAO produtoDao = ProdutoDAO.getInstance();
+                    produtoDao.remove(this.lista.get(i).getNome());
                     preencheLista();
-                JOptionPane.showMessageDialog(this,
-                    "Item removido com sucesso", //mensagem
-                    "Sucesso", // titulo da janela
-                    JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Item removido com sucesso", //mensagem
+                            "Sucesso", // titulo da janela
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (HeadlessException e) {
+                    JOptionPane.showMessageDialog(this,
+                            e.toString(), //mensagem
+                            "Erro", // titulo da janela
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void btnFileTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFileTxtMouseClicked
         String path = GetPathToSaveFile();
-        if (!path.isBlank()) 
-        {
-            try 
-            {
+        if (!path.isEmpty()) {
+            try {
                 FileWriter myWriter = new FileWriter("exportedtxt.txt");
                 myWriter.write(GetTextToFile());
                 myWriter.close();
-            } 
-            catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "Acesso negado ao caminho do arquivo. Tente executar como admistrador", "Alerta", JOptionPane.ERROR_MESSAGE);
-            }
-            catch (Exception e) 
-            {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Um erro ocorreu, tente novamente", "Alerta", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -178,24 +189,24 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
 
     private void btnFileCsvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFileCsvMouseClicked
         String path = GetPathToSaveFile();
-        if (!path.isBlank()) 
-        {
-            try 
-            {
+        if (!path.isEmpty()) {
+            try {
                 FileWriter myWriter = new FileWriter("exportedcsv.CSV");
-                myWriter.write(GetTextToFile());
+                myWriter.write(GetTextToCsvFile());
                 myWriter.close();
-            } 
-            catch (FileNotFoundException e)
-            {
+            } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(null, "Acesso negado ao caminho do arquivo. Tente executar como admistrador", "Alerta", JOptionPane.ERROR_MESSAGE);
-            }
-            catch (Exception e) 
-            {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Um erro ocorreu, tente novamente", "Alerta", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnFileCsvMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        
+        new TelaCadastroProdutos().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -231,52 +242,46 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
             }
         });
     }
-    
-    
+
     private String GetTextToFile() {
         String reallyLongString = "";
-        
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");  
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         LocalDateTime now = LocalDateTime.now();
         reallyLongString = "Mercadinho IFSC\nData: " + dtf.format(LocalDateTime.now()) + "\n\n"
                 + "Item       Descrição           Qtd         Valor Unitário          Valor Total\n";
-        
-        for(Produto produto : lista)
-        {
+
+        for (Produto produto : lista) {
             reallyLongString += "\n"
-                + "              " + produto.getNome()
-                + "                " + String.valueOf(produto.getPreco()) 
-                + "                " + String.valueOf(produto.getId());
+                    + "              " + produto.getNome()
+                    + "                " + String.valueOf(produto.getPreco())
+                    + "                " + String.valueOf(produto.getId());
         }
         return reallyLongString;
     }
-    
-    private String GetTextToCsvFile() 
-    {
+
+    private String GetTextToCsvFile() {
         String reallyLongString = "nome;preco;id";
-        for(Produto produto : lista)
-        {
-            reallyLongString += "\n" + produto.getNome() + 
-                    ";" + String.valueOf(produto.getPreco()) +
-                    ";" + String.valueOf(produto.getId());
+        for (Produto produto : lista) {
+            reallyLongString += "\n" + produto.getNome()
+                    + ";" + String.valueOf(produto.getPreco())
+                    + ";" + String.valueOf(produto.getId());
         }
-        
+
         return reallyLongString;
     }
-    
+
     private String GetPathToSaveFile() {
         JFileChooser chooser = new JFileChooser();;
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
-        
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             return String.valueOf(chooser.getCurrentDirectory());
-        }
-        else 
-        {
+        } else {
             return "";
-        }  
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

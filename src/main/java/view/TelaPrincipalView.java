@@ -31,12 +31,14 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     /**
      * Creates new form TelaPrincipalView
      */
-    ListaProdutosSingleton ProdutosLista;
+
+    
+    ArrayList<Produto> lista = new ArrayList<>();
 
     public TelaPrincipalView() {
 
         initComponents();
-        ProdutosLista.getInstance();
+      
         preencheLista();
     }
 
@@ -45,13 +47,13 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         ProdutoDAO produtoDao = new ProdutoDAO();
 
         for (Produto produto : produtoDao.getProdutos()) {
-             ProdutosLista.AddProductToCart(produto);
+             lista.add(produto);
+            
         }
         
-
         DefaultListModel dlm = new DefaultListModel();
-        for (int i = 0; i < this.ProdutosLista.getProductsList().size(); i++) {
-            dlm.addElement(ProdutosLista.getProductsList().get(i).getNome() + " - " + ProdutosLista.getProductsList().get(i).getPreco());
+        for (int i = 0; i < this.lista.size(); i++) {
+            dlm.addElement(lista.get(i).getNome() + " - " + lista.get(i).getPreco());
 
         }
         jList1.setModel(dlm);
@@ -77,25 +79,18 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Produtos");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
 
         jScrollPane1.setViewportView(jList1);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 210, 150));
-
         jLabel2.setText("Quantidade");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 142, -1));
 
         jButton1.setText("Adicionar Produto");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -108,16 +103,12 @@ public class TelaPrincipalView extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane2.setViewportView(jTextArea1);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 532, 146));
-
         jLabel3.setText("Carrinho");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, -1, -1));
 
         jButton2.setText("Limpar Carrinho");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -125,7 +116,6 @@ public class TelaPrincipalView extends javax.swing.JFrame {
                 jButton2MouseClicked(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 230, -1, -1));
 
         jButton3.setText("Remover");
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -133,17 +123,8 @@ public class TelaPrincipalView extends javax.swing.JFrame {
                 jButton3MouseClicked(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 230, -1, -1));
-
-        jButton4.setText("Exportar em PDF");
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, -1, -1));
-
-        jButton5.setText("Exportar em TXT");
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 270, -1, -1));
 
         jLabel4.setText("Numero do item");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, -1, -1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 230, 95, -1));
 
         jButton6.setText("Sair");
         jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -151,7 +132,77 @@ public class TelaPrincipalView extends javax.swing.JFrame {
                 jButton6MouseClicked(evt);
             }
         });
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
+
+        jLabel5.setText("Mercado Jalim Rabei");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(60, 60, 60)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel4)
+                                .addGap(12, 12, 12)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(85, 85, 85)
+                                .addComponent(jButton3)
+                                .addGap(63, 63, 63)
+                                .addComponent(jButton2))
+                            .addComponent(jButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(222, 222, 222)
+                                .addComponent(jLabel3)))
+                        .addGap(68, 68, 68))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6)
+                        .addGap(18, 18, 18))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel3))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(11, 11, 11)
+                .addComponent(jButton1))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -161,16 +212,15 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-
-        for (int i = 0; i < ProdutosLista.getProductsList().size(); i++) {
-            if (this.jList1.getSelectedValue().contains(this.ProdutosLista.getProductsList().get(i).getNome())) {
+for (int i = 0; i < lista.size(); i++) {
+            if (this.jList1.getSelectedValue().contains(this.lista.get(i).getNome())) {
 
                 VendaDAO vendaDao = VendaDAO.getInstance();
 
                 if (this.jTextField1.getText().length() > 0) {
-                    vendaDao.insert(this.ProdutosLista.getProductsList().get(i).getNome(), this.ProdutosLista.getProductsList().get(i).getPreco(), Integer.parseInt(this.jTextField1.getText()));
+                    vendaDao.insert(this.lista.get(i).getNome(), this.lista.get(i).getPreco(), Integer.parseInt(this.jTextField1.getText()));
                 } else {
-                    vendaDao.insert(this.ProdutosLista.getProductsList().get(i).getNome(), this.ProdutosLista.getProductsList().get(i).getPreco(), 1);
+                    vendaDao.insert(this.lista.get(i).getNome(), this.lista.get(i).getPreco(), 1);
                 }
 
                 String reallyLongString = "";
@@ -192,7 +242,6 @@ public class TelaPrincipalView extends javax.swing.JFrame {
 
             }
         }
-
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
@@ -266,7 +315,7 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaLoginView().setVisible(true);
+                new TelaPrincipalView().setVisible(true);
             }
         });
     }
@@ -275,13 +324,12 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
