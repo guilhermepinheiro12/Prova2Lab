@@ -17,10 +17,18 @@ public class ProductNameValidationHandler implements IHandler{
     String ProductName;
     String PrecoInTextField;
 
+    /**
+     *
+     * @param productName Nome do produto a ser validado
+     */
     public ProductNameValidationHandler(String productName) {
         ProductName = productName;
     }
     
+    /**
+     *
+     * @return Se o próximo handler teve uma validação correta
+     */
     @Override
     public boolean SetNext() {
         if (NextHandler.Handle()) {
@@ -32,10 +40,18 @@ public class ProductNameValidationHandler implements IHandler{
         }
     }
     
+    /**
+     *
+     * @param NextHandler Passa o próximo handler a validar
+     */
     public void setNextHandler(IHandler NextHandler) {
         this.NextHandler = NextHandler;
     }
 
+    /**
+     *
+     * @return Faz a validação do nome do produto
+     */
     @Override
     public boolean Handle() {
         String pattern = "^((?=[A-Za-z0-9@ ])(?![_\\\\-]).)*$";

@@ -16,10 +16,18 @@ public class ProductPriceValidationHandler implements IHandler{
     String PrecoInTextField;
     IHandler NextHandler;
 
+    /**
+     *
+     * @param preco a ser validado
+     */
     public ProductPriceValidationHandler(String preco) {
         PrecoInTextField = preco;
     }
     
+    /**
+     *
+     * @return Se o próximo handler teve uma validação correta
+     */
     @Override
     public boolean SetNext() {
         if (NextHandler.Handle()) {
@@ -31,11 +39,18 @@ public class ProductPriceValidationHandler implements IHandler{
         }
     }
 
+    /**
+     *
+     * @param NextHandler Passa o próximo handler a validar
+     */
     public void setNextHandler(IHandler NextHandler) {
         this.NextHandler = NextHandler;
     }
     
-
+    /**
+     *
+     * @return Faz a validação do preço do produto
+     */
     @Override
     public boolean Handle() {
         try

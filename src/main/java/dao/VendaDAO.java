@@ -21,14 +21,32 @@ import view.TelaPrincipalView;
  *
  * @author chris
  */
+
+/**
+ *
+ * @author guisi
+ */
+
 public class VendaDAO {
 
     private static final VendaDAO instance = new VendaDAO();
 
+    /**
+     * Retorna instância SINGLETON da classe
+     *
+     * @return Retorna instância SINGLETON
+     */
     public static VendaDAO getInstance() {
         return instance;
     }
 
+    /**
+     * Insere uma nova venda na aplicação
+     *
+     * @param nome a ser inserido
+     * @param preco a ser inserido
+     * @param Qtd a ser inserido
+     */
     public void insert(String nome, double preco, int Qtd) {
 
         try {
@@ -49,6 +67,11 @@ public class VendaDAO {
 
     }
 
+    /**
+     * Remove uma venda da aplicação com base no seu ID
+     *
+     * @param id que irá encontrar o remover a venda
+     */
     public void remove(int id) {
 
         try {
@@ -67,7 +90,12 @@ public class VendaDAO {
         }
 
     }
-     public void removerTudo() {
+
+    /**
+     * Remove todas as vendas cadastradas
+     *
+     */
+    public void removerTudo() {
 
         try {
             Connection conexao = new Conexao().getConnection();
@@ -85,6 +113,12 @@ public class VendaDAO {
         }
 
     }
+
+    /**
+     * Retorna todas as vendas cadastradas
+     *
+     * @return Retorna todas as vendas cadastradas
+     */
     public ArrayList<Venda> getVenda() {
     ArrayList<Venda> resultado = new ArrayList<>();
         try {

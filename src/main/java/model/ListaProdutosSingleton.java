@@ -20,6 +20,11 @@ public class ListaProdutosSingleton
         ProdutoList = new ArrayList<>();
     }
     
+    /**
+     * Função para chamar classe singleton
+     * 
+     * @return uma instância singleton
+     */
     public static ListaProdutosSingleton getInstance()
     {
         if (Instance == null)
@@ -28,20 +33,38 @@ public class ListaProdutosSingleton
         return Instance;
     }
 
+    /**
+     * Retorna a lista de produtos do carrinho
+     * 
+     * @return Arraylist do carrinho
+     */
     public ArrayList<Produto> getProductsList() {
         return ProdutoList;
     }
     
+    /**
+     * Adiciona um produto à lista de produtos do carrinho
+     * 
+     * @param product a ser adicionado na lista
+     */
     public void AddProductToCart(Produto product)
     {
         ProdutoList.add(product);
     }
     
+    /**
+     * Remove um produto do carrinho pelo index passado
+     * 
+     * @param index que será utilizado para remover o produto
+     */
     public void RemoveProductFromCart(int index)
     {
         ProdutoList.remove(index);
     }
     
+    /**
+     * Remove todos os itens do carrinho
+     */
     public void CleanCart()
     {
         ProdutoList.clear();

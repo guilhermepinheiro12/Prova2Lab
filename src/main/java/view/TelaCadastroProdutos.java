@@ -18,6 +18,9 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
 
     ProductNameValidationHandler Handler;
 
+    /**
+     *
+     */
     public TelaCadastroProdutos() {
         initComponents();
     }
@@ -196,6 +199,11 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
     private javax.swing.JTextField precoTextField;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Função para validar os campos de cadastro do produto
+     * 
+     * @return se as validações foram corretas ou não
+     */
     private boolean ValidateProductRegistration() {
         if (Handler.Handle()) {
             if (Handler.SetNext()) {
@@ -205,6 +213,10 @@ public class TelaCadastroProdutos extends javax.swing.JFrame {
         return false;
     }
 
+    /**
+     * Função para inicializar e configurar os Handlers para validação
+     * 
+     */
     private void SetValidationMethods() {
         Handler = new ProductNameValidationHandler(nomeTextField.getText());
         ProductPriceValidationHandler priceHandler = new ProductPriceValidationHandler(precoTextField.getText());

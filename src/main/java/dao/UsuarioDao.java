@@ -22,10 +22,23 @@ public class UsuarioDao {
 
     private static final UsuarioDao instance = new UsuarioDao();
 
+    /**
+     * Retorna instância SINGLETON da classe
+     *
+     * @return Retorna instância SINGLETON
+     */
     public static UsuarioDao getInstance() {
         return instance;
     }
 
+    /**
+     * Insere um novo usuário na aplicação
+     *
+     * @param nome a ser inserido
+     * @param login a ser inserido
+     * @param senha a ser inserido
+     * @param admin a ser inserido
+     */
     public void insert(String nome, String login, String senha, boolean admin) {
 
         try {
@@ -46,6 +59,13 @@ public class UsuarioDao {
 
     }
 
+    /**
+     * Retorna um usuário pelo seu login e senha digitados na tela de login
+     *
+     * @param login para buscar o usuário
+     * @param senha para buscar o usuário
+     * @return usuário encontrado ou usuário inválido caso não seja encontrado
+     */
     public Usuario getUser(String login, String senha) {
         Usuario user = new Usuario("INVALID", "123", "456", true);
         try {

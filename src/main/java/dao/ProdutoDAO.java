@@ -24,17 +24,18 @@ public class ProdutoDAO {
     private static final ProdutoDAO instance = new ProdutoDAO();
 
     /**
+     * Retorna o SINGLETON da classe
      *
-     * @return
+     * @return Retorna o SINGLETON
      */
     public static ProdutoDAO getInstance() {
         return instance;
     }
 
     /**
-     *
-     * @param nome
-     * @param preco
+     * Remove um produto pelo seu nome
+     * 
+     * @param nome do produto a ser removido
      */
     public void remove(String nome) {
 
@@ -56,6 +57,12 @@ public class ProdutoDAO {
 
     }
 
+    /**
+     * Insere na tabela nome e preço de um novo produto
+     * 
+     * @param nome a ser inserido
+     * @param preco a ser inserido
+     */
     public void insert(String nome, double preco) {
 
         try {
@@ -75,6 +82,12 @@ public class ProdutoDAO {
         }
 
     }
+
+    /**
+     * Retorna todos os produtos inseridos na tabela
+     * 
+     * @return Retorna todos os produtos inseridos na tabela
+     */
     public ArrayList<Produto> getProdutos() {
         ArrayList<Produto> produtos = new ArrayList<>();
         try {

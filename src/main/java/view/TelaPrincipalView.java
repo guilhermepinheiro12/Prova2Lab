@@ -35,6 +35,9 @@ public class TelaPrincipalView extends javax.swing.JFrame {
     
     ArrayList<Produto> lista = new ArrayList<>();
 
+    /**
+     * Construtor inicializa componentes e preenche a lista na tela
+     */
     public TelaPrincipalView() {
 
         initComponents();
@@ -42,6 +45,9 @@ public class TelaPrincipalView extends javax.swing.JFrame {
         preencheLista();
     }
 
+    /**
+     * Função que preenche a lista do forms com todos os produtos cadastrados
+     */
     public void preencheLista() {
         
         ProdutoDAO produtoDao = new ProdutoDAO();

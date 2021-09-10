@@ -28,11 +28,17 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
      */
     ArrayList<Produto> lista = new ArrayList<>();
 
+    /**
+      Construtor inicializa componentes e preenche a lista na tela
+     */
     public TelaVisualizarProdutosView() {
         initComponents();
         preencheLista();
     }
 
+    /**
+     * Função que preenche a lista do forms com todos os produtos cadastrados
+     */
     public void preencheLista() {
          this.lista.removeAll(lista);
         ProdutoDAO produtoDao = new ProdutoDAO();
@@ -243,6 +249,11 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Prepara o texto que será adicionado ao arquivo TXT exportado
+     * 
+     * @return texto com informações de todos os produtos cadastrados
+     */
     private String GetTextToFile() {
         String reallyLongString = "";
 
@@ -259,7 +270,13 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
         }
         return reallyLongString;
     }
-
+    
+    /**
+     * Prepara o texto que será adicionado ao arquivo CSV exportado
+     * 
+     * @return texto com informações de todos os produtos cadastrados em 
+     * formato CSV
+     */
     private String GetTextToCsvFile() {
         String reallyLongString = "nome;preco;id";
         for (Produto produto : lista) {
@@ -271,6 +288,12 @@ public class TelaVisualizarProdutosView extends javax.swing.JFrame {
         return reallyLongString;
     }
 
+    
+    /**
+     * Abre uma janela para escolha de caminho dos arquivos a serem importados
+     * 
+     * @return caminho escolhido para criar arquivo de export
+     */
     private String GetPathToSaveFile() {
         JFileChooser chooser = new JFileChooser();;
         chooser.setCurrentDirectory(new java.io.File("."));
